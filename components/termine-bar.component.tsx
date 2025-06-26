@@ -49,11 +49,12 @@ export default function TermineBarComponent({
         </Popover>
 
         {/* View Toggle Buttons */}
-        <div className="flex gap-2">
+        <div className="flex gap-2 bg-secondary p-1 rounded">
           {Object.values(ViewEnum).map((v) => (
             <Button
               key={v}
-              variant={v === view ? "default" : "outline"}
+              variant={v === view ? "outline" : "transparent"}
+              size={"sm"}
               onClick={() => setView(v)}
             >
               {v.charAt(0).toUpperCase() + v.slice(1).toLowerCase()}
