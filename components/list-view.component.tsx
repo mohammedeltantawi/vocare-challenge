@@ -1,3 +1,4 @@
+import { useCategories } from "@/context/category.context";
 import { Appointment } from "@/models/appointment.model";
 import { CircleAlert, Clock, MapPin, MessageSquareText } from "lucide-react";
 import { useState } from "react";
@@ -11,6 +12,9 @@ const formatDate = (date: Date) =>
   date.toLocaleDateString("de-DE", { weekday: "long", day: "2-digit", month: "long" });
 
 export default function ListView({ appointments, selectedDate }: Props) {
+  
+  const categories = useCategories();
+
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
@@ -45,6 +49,12 @@ export default function ListView({ appointments, selectedDate }: Props) {
     return new Date(apptEnd) < new Date()
   } 
 
+  const getBackgroundColor =(categoryId: string) => {
+    const category = categories.find((c) => c.id === categoryId);
+
+    return`${category?.color}20`; // transparent variant for background
+  }
+
   return (
     <div className="p-6 bg-secondary flex flex-col items-center min-h-screen">
       {/* Load earlier button */}
@@ -76,7 +86,12 @@ export default function ListView({ appointments, selectedDate }: Props) {
                 .map((appt) => (
                   <div key={appt.id} className="rounded-md p-4 shadow-sm border bg-white">
                     <div className="flex flex-row justify-between items-center">
-                      <div className={`font-semibold text-lg ${didPass(appt.end) && "line-through"}`}>{appt.title}</div>
+                      <div className="flex flex-row items-center gap-2">
+                        <div className="h-5 w-5 rounded" style={{
+                          backgroundColor: getBackgroundColor(appt.category),
+                        }}></div>
+                        <div className={`font-semibold text-lg ${didPass(appt.end) && "line-through"}`}>{appt.title}</div>
+                      </div>
                       <input 
                         type="checkbox" 
                         className="h-4 w-4 rounded border border-gray-300 bg-white text-white checked:bg-black checked:border-black appearance-none relative 

@@ -5,12 +5,14 @@ import ListView from '@/components/list-view.component';
 import { ViewEnum } from '@/enums/view-type.enum';
 import { Appointment } from "@/models/appointment.model";
 import { useState } from 'react';
+import { CategoryContext } from '@/context/category.context';
 
 interface Props {
   appointments: Appointment[];
+  categories: { id: string; label: string; color: string }[];
 }
 
-export default function AppointmentsClient({ appointments }: Props) {
+export default function AppointmentsClient({ appointments, categories }: Props) {
   const [view, setView] = useState<ViewEnum>(ViewEnum.WEEK);
   const [selectedDate, setSelectedDate] = useState(new Date());
 
@@ -27,19 +29,21 @@ export default function AppointmentsClient({ appointments }: Props) {
   });
 
   return (
-    <main className="p-4">
-      <TermineBarComponent
-        view={view}
-        setView={setView}
-        selectedDate={selectedDate}
-        setSelectedDate={setSelectedDate}
-      />
-      {view === ViewEnum.LIST && (
-        <ListView appointments={appointments} selectedDate={selectedDate} />
-      )}
-      {view === ViewEnum.WEEK && (
-        <CalendarGrid weekDates={weekDates} appointments={appointments} />
-      )}
-    </main>
+    <CategoryContext.Provider value={categories}>
+      <main className="p-4">
+        <TermineBarComponent
+          view={view}
+          setView={setView}
+          selectedDate={selectedDate}
+          setSelectedDate={setSelectedDate}
+        />
+        {view === ViewEnum.LIST && (
+          <ListView appointments={appointments} selectedDate={selectedDate} />
+        )}
+        {view === ViewEnum.WEEK && (
+          <CalendarGrid weekDates={weekDates} appointments={appointments} />
+        )}
+      </main>
+    </CategoryContext.Provider>
   );
 }
