@@ -12,31 +12,13 @@ export default function DayColumn({ day, appointments }: Props) {
   const endHour = 22;
   const hourHeight = 120; // px
 
-  const [nowTop, setNowTop] = useState<number | null>(null);
-
-  // Position current time red line
-  useEffect(() => {
-    const update = () => {
-      const now = new Date();
-      if (now.toDateString() !== day.toDateString()) {
-        setNowTop(null);
-        return;
-      }
-      const minutesFromStart = (now.getHours() - startHour) * 60 + now.getMinutes();
-      setNowTop(minutesFromStart);
-    };
-    update();
-    const interval = setInterval(update, 60000); // every minute
-    return () => clearInterval(interval);
-  }, [day]);
-
   return (
-    <div className="relative flex-1 border-l bg-white">
+    <div className="relative flex-1 border-l bg-white min-h-[1920px]">
       {/* hour lines */}
       {Array.from({ length: endHour - startHour + 1 }).map((_, i) => (
         <div
           key={i}
-          className="absolute w-full border-t text-xs text-gray-400 px-1"
+          className="absolute w-full border-t border-dotted text-xs text-gray-400 px-1"
           style={{
             top: `${i * hourHeight}px`,
             height: `${hourHeight}px`,
@@ -45,14 +27,6 @@ export default function DayColumn({ day, appointments }: Props) {
         </div>
       ))}
 
-      {/* current time line */}
-      {nowTop !== null && (
-        <div
-          className="absolute left-0 right-0 h-[2px] bg-red-500 z-10"
-          style={{ top: `${nowTop}px` }}
-        />
-      )}
-
       {/* appointments */}
       {appointments.map((appt) => {
         const start = new Date(appt.start);
@@ -60,21 +34,23 @@ export default function DayColumn({ day, appointments }: Props) {
         const minutesFromStart = (start.getHours() - startHour) * 60 + start.getMinutes();
         const durationInMinutes = (end.getTime() - start.getTime()) / 60000;
 
+        const top = (minutesFromStart / 60) * hourHeight;
+        const height = (durationInMinutes / 60) * hourHeight;
+
         return (
           <div
             key={appt.id}
-            className="absolute px-1"
+            className="absolute left-[2px] right-[2px] px-1"
             style={{
-              top: `${minutesFromStart}px`,
-              height: `${durationInMinutes}px`,
-              left: "2px",
-              right: "2px",
+              top: `${top}px`,
+              height: `${height}px`,
             }}
           >
             <AppointmentCard appointment={appt} />
           </div>
         );
       })}
+
     </div>
   );
 }
