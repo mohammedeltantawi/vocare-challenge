@@ -2,6 +2,11 @@ import { Appointment } from "@/models/appointment.model";
 import { Clock, MapPin, MessageSquareText } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useCategories } from "@/context/category.context";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 
 interface Props {
   appointment: Appointment;
@@ -16,6 +21,10 @@ export default function AppointmentCard({ appointment }: Props) {
   const borderColor = category?.color || "#ccc"; // fallback to light gray
   const bgColor = `${category?.color}20`; // transparent variant for background
 
+  function formatTime(dateStr: string) {
+    const date = new Date(dateStr);
+    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  }
   return (
     <div
       className={cn(
@@ -27,9 +36,41 @@ export default function AppointmentCard({ appointment }: Props) {
       }}
     >
       <div className="flex justify-between items-start">
+        <HoverCard>
+        <HoverCardTrigger asChild>
         <strong className={cn("block", didPass(appointment.end) && "line-through")}>
           {appointment.title}
         </strong>
+        </HoverCardTrigger>
+        <HoverCardContent className="w-64 bg-secondary p-3 text-sm space-y-1 border-l-4" style={{
+                        borderLeftColor: bgColor, 
+
+                      }}>
+                      <div className="font-semibold">{appointment.title}</div>
+                      <div className="flex flex-row gap-2 items-center">
+                        <Clock size={16} className="flex-shrink-0" />
+                        <p className="text-sm text-secondaryText">
+                          {formatTime(appointment.start)} bis {formatTime(appointment.end)}
+                        </p>
+                      </div>
+                      {appointment.location &&                       
+                      <div className="flex flex-row gap-2 items-center">
+                          <MapPin size={16} className="flex-shrink-0" />
+                          <p className="text-sm text-secondaryText">{appointment.location}</p>
+                        </div>}
+                      {appointment.notes && 
+                      <div className="flex flex-row gap-2 items-center">
+                          <MessageSquareText size={16} className="flex-shrink-0" />
+                          <p className="text-sm text-secondaryText">{appointment.notes}</p>
+                        </div>}
+
+                      {appointment.category && 
+                      <div className="flex flex-row gap-2 items-center">
+                          <p className="text-sm text-secondaryText">{categories.find((c) => c.id === appointment.category)?.label}</p>
+                        </div>}
+                  </HoverCardContent>
+                </HoverCard>
+
         <input
           type="checkbox"
           readOnly

@@ -1,6 +1,12 @@
 import { Appointment } from "@/models/appointment.model";
 import { cn } from "@/lib/utils";
 import { useCategories } from "@/context/category.context";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import { Clock, MapPin, MessageSquareText } from "lucide-react";
 
 interface Props {
   selectedDate: Date;
@@ -27,6 +33,11 @@ export default function MonthView({ selectedDate, appointments, setSelectedDate 
     days.push(new Date(current));
     current.setDate(current.getDate() + 1);
   }
+  function formatTime(dateStr: string) {
+    const date = new Date(dateStr);
+    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  }
+
 
   const isToday = (d: Date) => new Date().toDateString() === d.toDateString();
   const isSelectedDate = (d: Date) => new Date(selectedDate).toDateString() === d.toDateString();
@@ -74,15 +85,46 @@ export default function MonthView({ selectedDate, appointments, setSelectedDate 
 
             <div className="mt-1 space-y-1 overflow-hidden">
               {appts.slice(0, 2).map((appt) => (
-                <div
-                  key={appt.id}
-                  className={cn("truncate text-xs rounded px-1 py-0.5 border-l-2 bg-secondary", isSelectedDate(day) && "bg-white")}
-                  style={{
-                    borderColor: getBackgroundColor(appt.category)
-                  }}
-                >
-                  {appt.title}
-                </div>
+                <HoverCard>
+                  <HoverCardTrigger asChild>
+                    <div
+                      key={appt.id}
+                      className={cn("truncate text-xs rounded px-1 py-0.5 border-l-4 bg-secondary", isSelectedDate(day) && "bg-white")}
+                      style={{
+                        borderColor: getBackgroundColor(appt.category)
+                      }}
+                    >
+                      {appt.title}
+                    </div>
+                  </HoverCardTrigger>
+                  <HoverCardContent className="w-64 bg-secondary p-3 text-sm space-y-1 border-l-4" style={{
+                        borderLeftColor: getBackgroundColor(appt.category), 
+
+                      }}>
+                      <div className="font-semibold">{appt.title}</div>
+                      <div className="flex flex-row gap-2 items-center">
+                        <Clock size={16} className="flex-shrink-0" />
+                        <p className="text-sm text-secondaryText">
+                          {formatTime(appt.start)} bis {formatTime(appt.end)}
+                        </p>
+                      </div>
+                      {appt.location &&                       
+                      <div className="flex flex-row gap-2 items-center">
+                          <MapPin size={16} className="flex-shrink-0" />
+                          <p className="text-sm text-secondaryText">{appt.location}</p>
+                        </div>}
+                      {appt.notes && 
+                      <div className="flex flex-row gap-2 items-center">
+                          <MessageSquareText size={16} className="flex-shrink-0" />
+                          <p className="text-sm text-secondaryText">{appt.notes}</p>
+                        </div>}
+
+                      {appt.category && 
+                      <div className="flex flex-row gap-2 items-center">
+                          <p className="text-sm text-secondaryText">{categories.find((c) => c.id === appt.category)?.label}</p>
+                        </div>}
+                  </HoverCardContent>
+                </HoverCard>
               ))}
               {appts.length > 2 && (
                 <div className="text-[10px] text-gray-500">+ weitere</div>
