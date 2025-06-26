@@ -8,7 +8,7 @@ interface Props {
 
 export default function CalendarGrid({ weekDates, appointments }: Props) {
   return (
-    <div className="grid grid-cols-7 border-t border-r text-sm h-[1000px] relative">
+    <div className="grid grid-cols-7 border-t border-r text-sm h-[1000px] relative col-span-7">
       {weekDates.map((date, idx) => (
         <DayColumn
           key={idx}
