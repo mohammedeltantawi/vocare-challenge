@@ -162,6 +162,18 @@ export default function TermineBarComponent({
                 </div>
               </div>
             </div>
+            <div className="pt-4 flex justify-end">
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  setSelectedCategories([]);
+                  setSelectedClient("");
+                  setDateRange({ from: null, to: null });
+                }}
+              >
+                Filter zurücksetzen
+              </Button>
+            </div>
           </DialogContent>
         </Dialog>
 
