@@ -13,6 +13,9 @@ const categoryStyles: Record<string, string> = {
 };
 
 export default function AppointmentCard({ appointment }: Props) {
+  const didPass = (apptEnd:string) => {
+    return new Date(apptEnd) < new Date()
+  } 
   const category = appointment.category?.toLowerCase() || "default";
   const colors = categoryStyles[category] || categoryStyles.default;
 
@@ -24,13 +27,13 @@ export default function AppointmentCard({ appointment }: Props) {
       )}
     >
       <div className="flex justify-between items-start">
-        <strong className="block">{appointment.title}</strong>
+        <strong className={`{block ${didPass(appointment.end) && "line-through"}`}>{appointment.title}</strong>
         <input 
           type="checkbox" 
           className="h-4 w-4 rounded border border-gray-300 bg-white text-white checked:bg-black checked:border-black appearance-none relative 
              before:absolute before:inset-0 before:flex before:items-center before:justify-center
-             checked:before:content-['✓'] checked:before:text-white checked:before:text-xs cursor-pointer" 
-          checked={new Date(appointment.end) < new Date()}
+             checked:before:content-['✓'] checked:before:text-white checked:before:text-xs cursor-pointer" readOnly
+          checked={didPass(appointment.end)}
           />
       </div>
 
