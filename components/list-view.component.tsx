@@ -1,5 +1,6 @@
 import { Appointment } from "@/models/appointment.model";
 import AppointmentCard from "./appointment-card.component";
+import { Clock, MapPin, MessageSquareText } from "lucide-react";
 
 interface Props {
   appointments: Appointment[];
@@ -38,15 +39,22 @@ export default function ListView({ appointments, selectedDate }: Props) {
                   key={appt.id}
                   className="rounded-md p-4 shadow-sm border bg-white"
                 >
-                  <div className="font-semibold text-sm">{appt.title}</div>
-                  <div className="text-xs text-gray-600">
-                    🕓 {formatTime(appt.start)} bis {formatTime(appt.end)}
+                  <div className="font-semibold text-lg">{appt.title}</div>
+                    <div className="flex flex-row gap-2 items-center">        
+                    <Clock color="var(--secondary-text)" className="flex-shrink-0" size={18}></Clock> 
+                    <p className="text-sm text-secondaryText">{formatTime(appt.start)} bis {formatTime(appt.end)}</p>
                   </div>
                   {appt.location && (
-                    <div className="text-xs text-gray-500">📍 {appt.location}</div>
+                    <div className="flex flex-row gap-2 items-center">        
+                      <MapPin color="var(--secondary-text)" className="flex-shrink-0" size={18}></MapPin> 
+                      <p className="text-sm text-secondaryText">{appt.location}</p>
+                    </div>
                   )}
                   {appt.notes && (
-                    <div className="text-xs text-gray-500">💬 {appt.notes}</div>
+                    <div className="flex flex-row gap-2 items-center">        
+                      <MessageSquareText color="var(--secondary-text)" className="flex-shrink-0" size={18}></MessageSquareText> 
+                      <p className="text-sm text-secondaryText">{appt.notes}</p>
+                    </div>
                   )}
                 </div>
               ))}

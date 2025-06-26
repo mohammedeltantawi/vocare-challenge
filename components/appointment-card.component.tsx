@@ -10,7 +10,7 @@ export default function AppointmentCard({ appointment }: Props) {
     <div className="absolute left-1 right-1 rounded-md shadow-sm p-2 text-sm bg-secondary">
       <strong className="block">{appointment.title}</strong>
       <div className="flex flex-row gap-1 items-center">
-        <Clock color="var(--secondary-text)" size={12}></Clock>
+        <Clock color="var(--secondary-text)"  className="flex-shrink-0" size={12}></Clock>
         <p className="text-xs text-secondaryText">{new Date(appointment.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {new Date(appointment.end).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
       </div>
       {appointment.location && 
