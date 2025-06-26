@@ -14,7 +14,7 @@ export default function ListView({ appointments, selectedDate }: Props) {
   const grouped = groupAppointmentsByDay(appointments);
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
+    <div className="p-6 bg-secondary flex flex-col items-center min-h-screen">
       {Object.entries(grouped).length === 0 && (
         <div className="text-center text-gray-500 mt-10">Keine weiteren Termine gefunden</div>
       )}
@@ -24,8 +24,8 @@ export default function ListView({ appointments, selectedDate }: Props) {
         const isToday = dateObj.toDateString() === selectedDate.toDateString();
 
         return (
-          <div key={date} className="mb-6">
-            <div className="flex items-center gap-2 mb-2">
+          <div key={date} className="mb-6 w-[500]">
+            <div className="flex items-center gap-2 mb-2 justify-between">
               <h2 className="text-lg font-semibold">{formatDate(dateObj)}</h2>
               {isToday && (
                 <span className="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full">
@@ -41,18 +41,18 @@ export default function ListView({ appointments, selectedDate }: Props) {
                 >
                   <div className="font-semibold text-lg">{appt.title}</div>
                     <div className="flex flex-row gap-2 items-center">        
-                    <Clock color="var(--secondary-text)" className="flex-shrink-0" size={18}></Clock> 
+                    <Clock color="var(--secondary-text)" className="flex-shrink-0" size={16}></Clock> 
                     <p className="text-sm text-secondaryText">{formatTime(appt.start)} bis {formatTime(appt.end)}</p>
                   </div>
                   {appt.location && (
                     <div className="flex flex-row gap-2 items-center">        
-                      <MapPin color="var(--secondary-text)" className="flex-shrink-0" size={18}></MapPin> 
+                      <MapPin color="var(--secondary-text)" className="flex-shrink-0" size={16}></MapPin> 
                       <p className="text-sm text-secondaryText">{appt.location}</p>
                     </div>
                   )}
                   {appt.notes && (
                     <div className="flex flex-row gap-2 items-center">        
-                      <MessageSquareText color="var(--secondary-text)" className="flex-shrink-0" size={18}></MessageSquareText> 
+                      <MessageSquareText color="var(--secondary-text)" className="flex-shrink-0" size={16}></MessageSquareText> 
                       <p className="text-sm text-secondaryText">{appt.notes}</p>
                     </div>
                   )}
