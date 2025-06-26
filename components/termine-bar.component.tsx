@@ -7,12 +7,16 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 import { ViewEnum } from "@/enums/view-type.enum";
-
+import { Dialog, DialogTrigger, DialogContent, DialogHeader } from "@/components/ui/dialog";
+import { Checkbox } from "@/components/ui/checkbox";
+import { useCategories } from "@/context/category.context";
 interface Props {
   view: ViewEnum;
   setView: (view: ViewEnum) => void;
   selectedDate: Date;
   setSelectedDate: (date: Date) => void;
+  selectedCategories: string[];
+  setSelectedCategories: (ids: string[]) => void;
 }
 
 export default function TermineBarComponent({
@@ -20,7 +24,17 @@ export default function TermineBarComponent({
   setView,
   selectedDate,
   setSelectedDate,
+  selectedCategories,
+  setSelectedCategories
 }: Props) {
+  const categories = useCategories();
+  const toggleCategory = (id: string) => {
+    if (selectedCategories.includes(id)) {
+      setSelectedCategories(selectedCategories.filter(c => c !== id));
+    } else {
+      setSelectedCategories([...selectedCategories, id]);
+    }
+  };
   return (
     <div className="flex items-center gap-4 mb-4 justify-between">
       <div className="flex items-center gap-4 mb-4">
@@ -64,10 +78,32 @@ export default function TermineBarComponent({
       </div>
 
       <div className='flex flex-row gap-5'>
-        <div id='termine-filtern-btn' className='cursor-pointer flex flex-row gap-2 items-center justify-center border border-s border-1 border-black w-fit h-8 px-3 py-1 text-sm rounded-md'>
-          <SlidersHorizontal color="black" size={12} />
-          <p>Termine filtern</p>
-        </div>
+        <Dialog>
+          <DialogTrigger asChild>
+          <div id='termine-filtern-btn' className='cursor-pointer flex flex-row gap-2 items-center justify-center border border-s border-1 border-black w-fit h-8 px-3 py-1 text-sm rounded-md'>
+            <SlidersHorizontal color="black" size={12} />
+            <p>Termine filtern</p>
+          </div>
+          </DialogTrigger>
+         <DialogContent>
+            <DialogHeader>Filter</DialogHeader>
+
+            <div className="space-y-4">
+              <h4 className="font-semibold">Kategorien</h4>
+              {categories.map(cat => (
+                <label key={cat.id} className="flex items-center gap-2 text-sm">
+                  <Checkbox
+                    checked={selectedCategories.includes(cat.id)}
+                    onCheckedChange={() => toggleCategory(cat.id)}
+                  />
+                  {cat.label}
+                </label>
+              ))}
+            </div>
+
+            {/* Optional: Add date range or client filter here */}
+          </DialogContent>
+        </Dialog>
         <div id='termine-filtern-btn' className='cursor-pointer bg-black flex flex-row gap-2 items-center justify-center border border-s border-1 border-black w-fit h-8 px-3 py-1 text-sm rounded-md'>
           <Plus color="white" size={12} />
           <p className='text-white'>Neuer Termin</p>

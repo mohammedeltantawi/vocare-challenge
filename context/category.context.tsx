@@ -1,11 +1,7 @@
 // context/CategoryContext.tsx
+import { Category } from "@/models/category.model";
 import { createContext, useContext } from "react";
 
-type Category = {
-  id: string;
-  label: string;
-  color: string;
-};
 
 export const CategoryContext = createContext<Category[]>([]);
 

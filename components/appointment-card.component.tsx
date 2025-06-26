@@ -43,33 +43,32 @@ export default function AppointmentCard({ appointment }: Props) {
         </strong>
         </HoverCardTrigger>
         <HoverCardContent className="w-64 bg-secondary p-3 text-sm space-y-1 border-l-4" style={{
-                        borderLeftColor: bgColor, 
+            borderLeftColor: bgColor, 
+            }}>
+            <div className="font-semibold">{appointment.title}</div>
+            <div className="flex flex-row gap-2 items-center">
+              <Clock size={16} className="flex-shrink-0" />
+              <p className="text-sm text-secondaryText">
+                {formatTime(appointment.start)} bis {formatTime(appointment.end)}
+              </p>
+            </div>
+            {appointment.location &&                       
+            <div className="flex flex-row gap-2 items-center">
+                <MapPin size={16} className="flex-shrink-0" />
+                <p className="text-sm text-secondaryText">{appointment.location}</p>
+              </div>}
+            {appointment.notes && 
+            <div className="flex flex-row gap-2 items-center">
+                <MessageSquareText size={16} className="flex-shrink-0" />
+                <p className="text-sm text-secondaryText">{appointment.notes}</p>
+              </div>}
 
-                      }}>
-                      <div className="font-semibold">{appointment.title}</div>
-                      <div className="flex flex-row gap-2 items-center">
-                        <Clock size={16} className="flex-shrink-0" />
-                        <p className="text-sm text-secondaryText">
-                          {formatTime(appointment.start)} bis {formatTime(appointment.end)}
-                        </p>
-                      </div>
-                      {appointment.location &&                       
-                      <div className="flex flex-row gap-2 items-center">
-                          <MapPin size={16} className="flex-shrink-0" />
-                          <p className="text-sm text-secondaryText">{appointment.location}</p>
-                        </div>}
-                      {appointment.notes && 
-                      <div className="flex flex-row gap-2 items-center">
-                          <MessageSquareText size={16} className="flex-shrink-0" />
-                          <p className="text-sm text-secondaryText">{appointment.notes}</p>
-                        </div>}
-
-                      {appointment.category && 
-                      <div className="flex flex-row gap-2 items-center">
-                          <p className="text-sm text-secondaryText">{categories.find((c) => c.id === appointment.category)?.label}</p>
-                        </div>}
-                  </HoverCardContent>
-                </HoverCard>
+            {appointment.category && 
+            <div className="flex flex-row gap-2 items-center">
+                <p className="text-sm text-secondaryText">{categories.find((c) => c.id === appointment.category)?.label}</p>
+              </div>}
+          </HoverCardContent>
+        </HoverCard>
 
         <input
           type="checkbox"
