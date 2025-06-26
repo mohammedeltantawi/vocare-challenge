@@ -12,27 +12,31 @@ interface Props {
 
 export default function AppointmentsClient({ appointments }: Props) {
   const [view, setView] = useState<ViewEnum>(ViewEnum.WEEK);
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
-  // Get start of current week (Monday)
-  const startOfWeek = new Date();
-  const dayOfWeek = startOfWeek.getDay(); // Sunday = 0, Monday = 1, ...
+  // Get start of the week based on selectedDate
+  const startOfWeek = new Date(selectedDate);
+  const dayOfWeek = startOfWeek.getDay(); // Sunday = 0
   const diffToMonday = (dayOfWeek + 6) % 7; // Makes Monday the first day
   startOfWeek.setDate(startOfWeek.getDate() - diffToMonday);
 
   const weekDates = [...Array(7)].map((_, i) => {
     const d = new Date(startOfWeek);
-    d.setDate(d.getDate() + i);
+    d.setDate(startOfWeek.getDate() + i);
     return d;
   });
 
   return (
     <main className="p-4">
-      <TermineBarComponent view={view} setView={setView} />
-
+      <TermineBarComponent
+        view={view}
+        setView={setView}
+        selectedDate={selectedDate}
+        setSelectedDate={setSelectedDate}
+      />
       {view === ViewEnum.LIST && (
-        <ListView appointments={appointments} selectedDate={new Date()} />
+        <ListView appointments={appointments} selectedDate={selectedDate} />
       )}
-
       {view === ViewEnum.WEEK && (
         <CalendarGrid weekDates={weekDates} appointments={appointments} />
       )}
