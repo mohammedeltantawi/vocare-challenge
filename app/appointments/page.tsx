@@ -25,7 +25,5 @@ export default async function Appointments() {
 
   const patients: Patient[] = patientData ?? []
 
-  console.log(patients);
-
   return <AppointmentsClient appointments={appointments} categories={categories} patients={patients}/>;
 }
