@@ -1,17 +1,14 @@
 export default function HourColumn() {
-  const startHour = 6;
-  const endHour = 22; // 10 PM
-
-  const hours = Array.from({ length: endHour - startHour + 1 }, (_, i) => i + startHour);
-
+  const hours = Array.from({ length: 17 }, (_, i) => 6 + i); // 6:00 to 22:00
   return (
-    <div className="border-r text-xs font-medium h-[1000px] relative">
-      {hours.map((hour) => (
+    <div className="relative text-right text-xs pr-1 h-[1020px]">
+      {hours.map((h, i) => (
         <div
-          key={hour}
-          className="h-[100px] flex items-center justify-end pr-2 border-b text-secondaryText"
+          key={h}
+          className="absolute right-1 text-gray-400"
+          style={{ top: `${i * 60}px` }}
         >
-          {hour}:00
+          {h}:00 Uhr
         </div>
       ))}
     </div>

@@ -29,7 +29,7 @@ export default function WeekColumn({ weekOffset, appointments }: Props) {
     );
   };
 
-  return (<div className="min-w-[1400px] border-l grid grid-cols-[60px_repeat(7,minmax(0,1fr))]">
+  return (<div className="min-w-[1400px] grid grid-cols-[60px_repeat(7,minmax(0,1fr))]">
 
             <div className="flex flex-col">
                 <div className="border-b h-10"></div> {/* Empty top-left cell */}
