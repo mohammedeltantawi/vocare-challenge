@@ -56,16 +56,15 @@ export default function AppointmentsClient({ appointments }: Props) {
         <ListView appointments={appointments} selectedDate={new Date()} />
       )}
       {view === ViewEnum.WEEK &&  (
-        <div
-          ref={scrollRef}
-          className="overflow-x-auto whitespace-nowrap border rounded-lg"
-        >
-          <div className="flex min-w-max gap-2">
-            <div className="w-[60px]">
-              <div className="h-10"/>
+        <div ref={scrollRef} className="overflow-auto border rounded-lg w-full h-[1100px] relative scroll-smooth">
+          <div className="flex min-w-max">
+            {/* Sticky Hour Column */}
+            <div className="sticky left-0 z-10 bg-white w-[60px] flex-shrink-0">
+              <div className="h-20" />
               <HourColumn />
             </div>
-            {/* Time column */}
+
+            {/* Scrollable Day Columns */}
             {visibleWeeks.map((offset) => (
               <WeekColumn
                 key={offset}

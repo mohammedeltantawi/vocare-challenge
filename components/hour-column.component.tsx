@@ -6,7 +6,7 @@ export default function HourColumn() {
         <div
           key={h}
           className="absolute right-1 text-gray-400"
-          style={{ top: `${i * 60}px` }}
+          style={{ top: `${i * 120}px` }}
         >
           {h}:00 Uhr
         </div>

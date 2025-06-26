@@ -10,7 +10,7 @@ interface Props {
 export default function DayColumn({ day, appointments }: Props) {
   const startHour = 6;
   const endHour = 22;
-  const hourHeight = 60; // px
+  const hourHeight = 120; // px
 
   const [nowTop, setNowTop] = useState<number | null>(null);
 

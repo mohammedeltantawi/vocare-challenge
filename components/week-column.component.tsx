@@ -33,7 +33,7 @@ export default function WeekColumn({ weekOffset, appointments }: Props) {
       <div className="flex-1 overflow-x-auto">
         <div className="grid grid-cols-7 min-w-[1400px]">
           {weekDates.map((date, i) => (
-            <div key={i} className="border-r h-10 flex items-center justify-center text-sm font-medium bg-white">
+            <div key={i} className="border-r h-20 flex items-center justify-center text-sm font-medium bg-white">
               {date.toLocaleDateString("de-DE", {
                 weekday: "long",
                 day: "2-digit",
