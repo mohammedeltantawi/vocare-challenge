@@ -42,18 +42,22 @@ export default function CalendarGrid({ weekDates, appointments }: Props) {
           {/* Hour column spacer */}
           <div className="w-[60px] flex-shrink-0 bg-white" />
           {/* Scrollable day headers */}
-          {weekDates.map((d, i) => (
-            <div
-              key={i}
-              className="min-w-[300px] h-16 flex items-center justify-center border-r bg-white"
-            >
-              {d.toLocaleDateString("de-DE", {
-                weekday: "long",
-                day: "2-digit",
-                month: "short",
-              })}
-            </div>
-          ))}
+          {weekDates.map((d, i) => {
+            const isToday = new Date().toDateString() === d.toDateString();
+            return(
+              <div
+                key={i}
+                className={`min-w-[300px] h-16 flex items-center justify-center border-r ${
+                  isToday ? "bg-secondary" : "bg-white"
+                }`}            >
+                {d.toLocaleDateString("de-DE", {
+                  weekday: "long",
+                  day: "2-digit",
+                  month: "short",
+                })}
+              </div>
+            )
+          })}
         </div>
 
         {/* Time + Day Columns */}
@@ -79,16 +83,19 @@ export default function CalendarGrid({ weekDates, appointments }: Props) {
 
 
           {/* Day columns */}
-          {weekDates.map((date, idx) => (
-            <DayColumn
-              key={idx}
-              day={date}
-              appointments={appointments.filter(
-                (appt) =>
-                  new Date(appt.start).toDateString() === date.toDateString()
-              )}
-            />
-          ))}
+          {weekDates.map((date, idx) => { 
+            const isToday = new Date().toDateString() === date.toDateString();
+            return (
+              <DayColumn
+                key={idx}
+                day={date}
+                isToday={isToday}
+                appointments={appointments.filter(
+                  (appt) =>
+                    new Date(appt.start).toDateString() === date.toDateString()
+                )}
+              />
+            )})}
         </div>
       </div>
     </div>

@@ -5,15 +5,16 @@ import { useEffect, useRef, useState } from "react";
 interface Props {
   day: Date;
   appointments: Appointment[];
+  isToday?: boolean;
 }
 
-export default function DayColumn({ day, appointments }: Props) {
+export default function DayColumn({ day, appointments, isToday }: Props) {
   const startHour = 6;
   const endHour = 22;
   const hourHeight = 120; // px
 
   return (
-    <div className="relative flex-1 border-l bg-white min-h-[1920px]">
+    <div className={`relative flex-1 border-l min-h-[1920px] ${isToday ? "bg-secondary" : "bg-white"}`}>
       {/* hour lines */}
       {Array.from({ length: endHour - startHour + 1 }).map((_, i) => (
         <div
@@ -23,8 +24,7 @@ export default function DayColumn({ day, appointments }: Props) {
             top: `${i * hourHeight}px`,
             height: `${hourHeight}px`,
           }}
-        >
-        </div>
+        />
       ))}
 
       {/* appointments */}
@@ -50,7 +50,6 @@ export default function DayColumn({ day, appointments }: Props) {
           </div>
         );
       })}
-
     </div>
   );
 }
