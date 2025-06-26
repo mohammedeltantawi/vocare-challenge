@@ -4,7 +4,8 @@ import CalendarGrid from "@/components/calendar-grid.component";
 import ListView from '@/components/list-view.component';
 import { ViewEnum } from '@/enums/view-type.enum';
 import { Appointment } from "@/models/appointment.model";
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import WeekColumn from '@/components/week-column.component';
 
 interface Props {
   appointments: Appointment[];
@@ -12,35 +13,62 @@ interface Props {
 
 export default function AppointmentsClient({ appointments }: Props) {
   const [view, setView] = useState<ViewEnum>(ViewEnum.WEEK);
+  const [visibleWeeks, setVisibleWeeks] = useState<number[]>(() =>
+    Array.from({ length: 5 }, (_, i) => i - 2) // start with [-2, -1, 0, 1, 2]
+  );
 
-  const startOfWeek = new Date();
-  const weekDates = [...Array(7)].map((_, i) => {
-    const d = new Date(startOfWeek);
-    d.setDate(d.getDate() + i);
-    return d;
-  });
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+    const scrollEl = scrollRef.current;
+    if (!scrollEl) return;
+
+    const handleScroll = () => {
+      const { scrollLeft, clientWidth, scrollWidth } = scrollEl;
+
+      const nearRight = scrollLeft + clientWidth > scrollWidth - 200;
+      const nearLeft = scrollLeft < 200;
+
+      if (nearRight) {
+        setVisibleWeeks((prev) => {
+          const max = Math.max(...prev);
+          return [...prev, max + 1];
+        });
+      }
+
+      if (nearLeft) {
+        setVisibleWeeks((prev) => {
+          const min = Math.min(...prev);
+          return [min - 1, ...prev];
+        });
+      }
+    };
+
+    scrollEl.addEventListener("scroll", handleScroll);
+    return () => scrollEl.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <main className="p-4">
       <TermineBarComponent view={view} setView={setView} />
-      
-      <div className="grid grid-cols-7 text-center text-sm border-b font-medium">
-        {weekDates.map((d, i) => (
-          <div key={i} className="py-2">
-            {d.toLocaleDateString("de-DE", {
-              weekday: "long",
-              day: "2-digit",
-              month: "short",
-            })}
-          </div>
-        ))}
-      </div>
-
       {view === ViewEnum.LIST && (
         <ListView appointments={appointments} selectedDate={new Date()} />
       )}
-      {view === ViewEnum.WEEK && (
-        <CalendarGrid weekDates={weekDates} appointments={appointments} />
+      {view === ViewEnum.WEEK &&  (
+        <div
+          ref={scrollRef}
+          className="overflow-x-auto whitespace-nowrap border rounded-lg"
+        >
+          <div className="flex min-w-max gap-2">
+            {visibleWeeks.map((offset) => (
+              <WeekColumn
+                key={offset}
+                weekOffset={offset}
+                appointments={appointments}
+              />
+            ))}
+          </div>
+        </div>
       )}
     </main>
   );
