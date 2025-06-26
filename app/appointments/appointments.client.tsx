@@ -6,6 +6,8 @@ import { ViewEnum } from '@/enums/view-type.enum';
 import { Appointment } from "@/models/appointment.model";
 import { useState } from 'react';
 import { CategoryContext } from '@/context/category.context';
+import MonthView from '@/components/month-view.component';
+import DaySidebar from '@/components/day-sidebar.component';
 
 interface Props {
   appointments: Appointment[];
@@ -28,6 +30,12 @@ export default function AppointmentsClient({ appointments, categories }: Props) 
     return d;
   });
 
+  const dayAppointments = selectedDate
+  ? appointments.filter(
+      (a) => new Date(a.start).toDateString() === selectedDate.toDateString()
+    )
+  : [];
+
   return (
     <CategoryContext.Provider value={categories}>
       <main className="p-4">
@@ -37,12 +45,30 @@ export default function AppointmentsClient({ appointments, categories }: Props) 
           selectedDate={selectedDate}
           setSelectedDate={setSelectedDate}
         />
-        {view === ViewEnum.LIST && (
-          <ListView appointments={appointments} selectedDate={selectedDate} />
-        )}
-        {view === ViewEnum.WEEK && (
-          <CalendarGrid weekDates={weekDates} appointments={appointments} />
-        )}
+        <div className='flex'>
+          <div className='flex-1'>
+
+            {view === ViewEnum.LIST && (
+              <ListView appointments={appointments} selectedDate={selectedDate} />
+            )}
+            {view === ViewEnum.WEEK && (
+              <CalendarGrid weekDates={weekDates} appointments={appointments} />
+            )}
+            {view === ViewEnum.MONTH && (
+              <MonthView selectedDate={selectedDate} appointments={appointments} 
+              onSelectDate={(date) => {
+                setSelectedDate(date);
+                ; // or WEEK if you prefer
+              }}/>
+            )}
+          </div>
+
+          {selectedDate && view === ViewEnum.MONTH && (
+            <div className="w-[350px] shrink-0">
+              <DaySidebar date={selectedDate} appointments={dayAppointments} />
+            </div>
+          )}
+        </div>
       </main>
     </CategoryContext.Provider>
   );

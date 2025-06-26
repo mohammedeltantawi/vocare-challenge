@@ -19,7 +19,7 @@ export default function AppointmentCard({ appointment }: Props) {
   return (
     <div
       className={cn(
-        "absolute left-1 right-1 rounded-md p-3 shadow-sm text-sm border-l-4"
+        "rounded-md p-3 shadow-sm text-sm border-l-4"
       )}
       style={{
         borderLeftColor: borderColor,
