@@ -1,5 +1,6 @@
 import { Appointment } from "@/models/appointment.model";
 import { cn } from "@/lib/utils";
+import { useCategories } from "@/context/category.context";
 
 interface Props {
   selectedDate: Date;
@@ -10,7 +11,7 @@ interface Props {
 export default function MonthView({ selectedDate, appointments, setSelectedDate }: Props) {
   const startOfMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
   const endOfMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0);
-
+  const categories = useCategories();
   // Determine the start of the calendar grid (Monday of first week)
   const startDay = new Date(startOfMonth);
   startDay.setDate(startDay.getDate() - ((startDay.getDay() + 6) % 7));
@@ -29,11 +30,13 @@ export default function MonthView({ selectedDate, appointments, setSelectedDate 
 
   const isToday = (d: Date) => new Date().toDateString() === d.toDateString();
   const isSelectedDate = (d: Date) => new Date(selectedDate).toDateString() === d.toDateString();
-  const isSameMonth = (d: Date) => d.getMonth() === selectedDate.getMonth();
-
   const getAppointmentsForDay = (date: Date) =>
     appointments.filter((appt) => new Date(appt.start).toDateString() === date.toDateString());
 
+  const getBackgroundColor =(categoryId: string) => {
+    const category = categories.find((c) => c.id === categoryId);
+    return`${category?.color}20`; // transparent variant for background
+  }
   return (
     <div>
     <div className="grid grid-cols-7 border-t border-l text-sm">
@@ -73,7 +76,10 @@ export default function MonthView({ selectedDate, appointments, setSelectedDate 
               {appts.slice(0, 2).map((appt) => (
                 <div
                   key={appt.id}
-                  className="truncate text-xs rounded px-1 py-0.5 bg-purple-100 text-purple-800 border-l-2 border-purple-600"
+                  className={cn("truncate text-xs rounded px-1 py-0.5 border-l-2 bg-secondary", isSelectedDate(day) && "bg-white")}
+                  style={{
+                    borderColor: getBackgroundColor(appt.category)
+                  }}
                 >
                   {appt.title}
                 </div>
