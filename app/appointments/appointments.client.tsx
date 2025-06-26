@@ -56,10 +56,7 @@ export default function AppointmentsClient({ appointments, categories }: Props) 
             )}
             {view === ViewEnum.MONTH && (
               <MonthView selectedDate={selectedDate} appointments={appointments} 
-              onSelectDate={(date) => {
-                setSelectedDate(date);
-                ; // or WEEK if you prefer
-              }}/>
+              setSelectedDate={setSelectedDate}/>
             )}
           </div>
 

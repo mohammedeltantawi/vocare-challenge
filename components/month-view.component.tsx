@@ -4,10 +4,10 @@ import { cn } from "@/lib/utils";
 interface Props {
   selectedDate: Date;
   appointments: Appointment[];
-  onSelectDate?: (date: Date) => void;
+  setSelectedDate?: (date: Date) => void;
 }
 
-export default function MonthView({ selectedDate, appointments, onSelectDate }: Props) {
+export default function MonthView({ selectedDate, appointments, setSelectedDate }: Props) {
   const startOfMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
   const endOfMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0);
 
@@ -28,12 +28,14 @@ export default function MonthView({ selectedDate, appointments, onSelectDate }: 
   }
 
   const isToday = (d: Date) => new Date().toDateString() === d.toDateString();
+  const isSelectedDate = (d: Date) => new Date(selectedDate).toDateString() === d.toDateString();
   const isSameMonth = (d: Date) => d.getMonth() === selectedDate.getMonth();
 
   const getAppointmentsForDay = (date: Date) =>
     appointments.filter((appt) => new Date(appt.start).toDateString() === date.toDateString());
 
   return (
+    <div>
     <div className="grid grid-cols-7 border-t border-l text-sm">
       {["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"].map(
         (d) => (
@@ -54,9 +56,9 @@ export default function MonthView({ selectedDate, appointments, onSelectDate }: 
             className={cn(
               "h-32 border-r border-b p-1 relative cursor-pointer transition-colors",
               "bg-white",
-              isToday(day) && "bg-secondary"
+              isSelectedDate(day) && "bg-secondary"
             )}
-            onClick={() => onSelectDate?.(day)}
+            onClick={() => setSelectedDate?.(day)}
           >
             <div
               className={cn(
@@ -84,5 +86,17 @@ export default function MonthView({ selectedDate, appointments, onSelectDate }: 
         );
       })}
     </div>
+      <button
+        onClick={() => {
+            const nextMonth = new Date(selectedDate);
+            nextMonth.setMonth(nextMonth.getMonth() + 1);
+            setSelectedDate?.(nextMonth);
+        }}
+        className="mt-4 mx-auto block rounded-md bg-gray-100 text-sm text-gray-800 px-4 py-2 hover:bg-gray-200 transition"
+        >
+            Nächsten Monat laden
+        </button>
+    </div>
+
   );
 }
