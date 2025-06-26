@@ -7,6 +7,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import { usePatients } from "@/context/patient.context";
 
 interface Props {
   appointment: Appointment;
@@ -17,6 +18,8 @@ export default function AppointmentCard({ appointment }: Props) {
 
   const categories = useCategories();
   const category = categories.find((c) => c.id === appointment.category);
+  const patients = usePatients();
+  const patient = patients.find((c) => c.id === appointment.patient);
 
   const borderColor = category?.color || "#ccc"; // fallback to light gray
   const bgColor = `${category?.color}20`; // transparent variant for background
@@ -24,6 +27,9 @@ export default function AppointmentCard({ appointment }: Props) {
   function formatTime(dateStr: string) {
     const date = new Date(dateStr);
     return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  }
+  const getPatient = () => {
+    return `${patient?.firstname} ${patient?.lastname}`
   }
   return (
     <div
@@ -66,6 +72,10 @@ export default function AppointmentCard({ appointment }: Props) {
             {appointment.category && 
             <div className="flex flex-row gap-2 items-center">
                 <p className="text-sm text-secondaryText">{categories.find((c) => c.id === appointment.category)?.label}</p>
+              </div>}
+            {appointment.patient && 
+            <div className="flex flex-row gap-2 items-center">
+                <p className="text-sm text-secondaryText">{getPatient()}</p>
               </div>}
           </HoverCardContent>
         </HoverCard>

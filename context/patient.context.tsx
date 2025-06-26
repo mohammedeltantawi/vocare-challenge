@@ -4,4 +4,4 @@ import { createContext, useContext } from "react";
 
 export const PatientContext = createContext<Patient[]>([]);
 
-export const useCategories = () => useContext(PatientContext);
+export const usePatients = () => useContext(PatientContext);

@@ -7,6 +7,7 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { Clock, MapPin, MessageSquareText } from "lucide-react";
+import { usePatients } from "@/context/patient.context";
 
 interface Props {
   selectedDate: Date;
@@ -18,6 +19,8 @@ export default function MonthView({ selectedDate, appointments, setSelectedDate 
   const startOfMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
   const endOfMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0);
   const categories = useCategories();
+  const patients = usePatients();
+
   // Determine the start of the calendar grid (Monday of first week)
   const startDay = new Date(startOfMonth);
   startDay.setDate(startDay.getDate() - ((startDay.getDay() + 6) % 7));
@@ -36,6 +39,12 @@ export default function MonthView({ selectedDate, appointments, setSelectedDate 
   function formatTime(dateStr: string) {
     const date = new Date(dateStr);
     return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  }
+
+  const getPatient = (patientId: string) => {
+    const patient = patients.find((c) => c.id === patientId);
+
+    return `${patient?.firstname} ${patient?.lastname}`
   }
 
 
@@ -122,6 +131,10 @@ export default function MonthView({ selectedDate, appointments, setSelectedDate 
                       {appt.category && 
                       <div className="flex flex-row gap-2 items-center">
                           <p className="text-sm text-secondaryText">{categories.find((c) => c.id === appt.category)?.label}</p>
+                        </div>}
+                      {appt.patient && 
+                      <div className="flex flex-row gap-2 items-center">
+                          <p className="text-sm text-secondaryText">{getPatient(appt.patient)}</p>
                         </div>}
                   </HoverCardContent>
                 </HoverCard>
