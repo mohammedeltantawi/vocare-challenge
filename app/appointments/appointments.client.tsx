@@ -6,6 +6,7 @@ import { ViewEnum } from '@/enums/view-type.enum';
 import { Appointment } from "@/models/appointment.model";
 import { useState, useEffect, useRef } from 'react';
 import WeekColumn from '@/components/week-column.component';
+import HourColumn from '@/components/hour-column.component';
 
 interface Props {
   appointments: Appointment[];
@@ -60,6 +61,11 @@ export default function AppointmentsClient({ appointments }: Props) {
           className="overflow-x-auto whitespace-nowrap border rounded-lg"
         >
           <div className="flex min-w-max gap-2">
+            <div className="w-[60px]">
+              <div className="h-10"/>
+              <HourColumn />
+            </div>
+            {/* Time column */}
             {visibleWeeks.map((offset) => (
               <WeekColumn
                 key={offset}

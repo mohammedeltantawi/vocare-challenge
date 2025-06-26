@@ -1,7 +1,5 @@
 import { Appointment } from "@/models/appointment.model";
 import CalendarGrid from "./calendar-grid.component";
-import HourColumn from "./hour-column.component";
-
 interface Props {
   weekOffset: number;
   appointments: Appointment[];
@@ -29,32 +27,24 @@ export default function WeekColumn({ weekOffset, appointments }: Props) {
     );
   };
 
-  return (<div className="min-w-[1400px] grid grid-cols-[60px_repeat(7,minmax(0,1fr))]">
-
-            <div className="flex flex-col">
-                <div className="border-b h-10"></div> {/* Empty top-left cell */}
-                <HourColumn />
+  return (
+    <div className="min-w-[1460px] flex">
+      {/* Date headers and grid */}
+      <div className="flex-1 overflow-x-auto">
+        <div className="grid grid-cols-7 min-w-[1400px]">
+          {weekDates.map((date, i) => (
+            <div key={i} className="border-r h-10 flex items-center justify-center text-sm font-medium bg-white">
+              {date.toLocaleDateString("de-DE", {
+                weekday: "long",
+                day: "2-digit",
+                month: "short",
+              })}
             </div>
-            <div className="grid grid-cols-7 text-xs font-medium border-b mb-2 col-span-7">
-                {weekDates.map((date, i) => (
-                    <div 
-                    key={i} 
-                    className={`border-r h-10 flex items-center justify-center ${
-                        isToday(date)
-                        ? "bg-secondary"
-                        : "bg-transparent"
-                    }`}
-                    >
-                    {date.toLocaleDateString("de-DE", {
-                        weekday: "long",
-                        day: "2-digit",
-                        month: "long",
-                    })}
-                </div>
-                ))}
-                <CalendarGrid weekDates={weekDates} appointments={appointments} />
-            </div>
+          ))}
+        </div>
 
+        <CalendarGrid weekDates={weekDates} appointments={appointments} />
+      </div>
     </div>
   );
 }
