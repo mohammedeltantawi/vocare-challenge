@@ -2,6 +2,14 @@ import { useCategories } from "@/context/category.context";
 import { Appointment } from "@/models/appointment.model";
 import { CircleAlert, Clock, MapPin, MessageSquareText } from "lucide-react";
 import { useMemo, useState } from "react";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle
+} from "@/components/ui/dialog";
+import AppointmentEditForm from "./appointment-edit.component";
 
 interface Props {
   appointments: Appointment[];
@@ -88,45 +96,59 @@ export default function ListView({ appointments, selectedDate }: Props) {
             </div>
             <div className="space-y-3">
               {appts.map((appt) => (
-                <div key={appt.id} className="rounded-md p-4 shadow-sm border bg-white">
-                  <div className="flex flex-row justify-between items-center">
-                    <div className="flex flex-row items-center gap-2">
-                      <div
-                        className="h-5 w-5 rounded"
-                        style={{ backgroundColor: getBackgroundColor(appt.category) }}
-                      ></div>
-                      <div className={`font-semibold text-lg ${didPass(appt.end) && "line-through"}`}>
-                        {appt.title}
+                <Dialog key={appt.id} >
+                  <DialogTrigger asChild>
+                    <div className="rounded-md p-4 shadow-sm border bg-white">
+                      <div className="flex flex-row justify-between items-center">
+                        <div className="flex flex-row items-center gap-2">
+                          <div
+                            className="h-5 w-5 rounded"
+                            style={{ backgroundColor: getBackgroundColor(appt.category) }}
+                          ></div>
+                          <div className={`font-semibold text-lg ${didPass(appt.end) && "line-through"}`}>
+                            {appt.title}
+                          </div>
+                        </div>
+                        <input
+                          type="checkbox"
+                          className="h-4 w-4 rounded border border-gray-300 bg-white text-white checked:bg-black checked:border-black appearance-none relative 
+                            before:absolute before:inset-0 before:flex before:items-center before:justify-center
+                            checked:before:content-['✓'] checked:before:text-white checked:before:text-xs cursor-pointer"
+                          readOnly
+                          checked={didPass(appt.end)}
+                        />
                       </div>
+                      <div className="flex flex-row gap-2 items-center">
+                        <Clock size={16} />
+                        <p className="text-sm text-secondaryText">
+                          {formatTime(appt.start)} bis {formatTime(appt.end)}
+                        </p>
+                      </div>
+                      {appt.location && (
+                        <div className="flex flex-row gap-2 items-center">
+                          <MapPin size={16} />
+                          <p className="text-sm text-secondaryText">{appt.location}</p>
+                        </div>
+                      )}
+                      {appt.notes && (
+                        <div className="flex flex-row gap-2 items-center">
+                          <MessageSquareText size={16} />
+                          <p className="text-sm text-secondaryText">{appt.notes}</p>
+                        </div>
+                      )}
                     </div>
-                    <input
-                      type="checkbox"
-                      className="h-4 w-4 rounded border border-gray-300 bg-white text-white checked:bg-black checked:border-black appearance-none relative 
-                        before:absolute before:inset-0 before:flex before:items-center before:justify-center
-                        checked:before:content-['✓'] checked:before:text-white checked:before:text-xs cursor-pointer"
-                      readOnly
-                      checked={didPass(appt.end)}
+                  </DialogTrigger>
+                  <DialogHeader>
+                    <DialogTitle></DialogTitle>
+                  </DialogHeader>
+                  <DialogContent>
+                    <AppointmentEditForm
+                      appointment={appt}
+                      onSuccess={() => window.location.reload()}
                     />
-                  </div>
-                  <div className="flex flex-row gap-2 items-center">
-                    <Clock size={16} />
-                    <p className="text-sm text-secondaryText">
-                      {formatTime(appt.start)} bis {formatTime(appt.end)}
-                    </p>
-                  </div>
-                  {appt.location && (
-                    <div className="flex flex-row gap-2 items-center">
-                      <MapPin size={16} />
-                      <p className="text-sm text-secondaryText">{appt.location}</p>
-                    </div>
-                  )}
-                  {appt.notes && (
-                    <div className="flex flex-row gap-2 items-center">
-                      <MessageSquareText size={16} />
-                      <p className="text-sm text-secondaryText">{appt.notes}</p>
-                    </div>
-                  )}
-                </div>
+                </DialogContent>
+              </Dialog>
+                
               ))}
             </div>
           </div>

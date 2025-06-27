@@ -40,7 +40,7 @@ export default function DaySidebar({ date, appointments }: Props) {
                       </div>
                     </DialogTrigger>
                     <DialogHeader>
-                      <DialogTitle>{appt.title}</DialogTitle>
+                      <DialogTitle>{}</DialogTitle>
                     </DialogHeader>
                     <DialogContent>
                       <AppointmentEditForm 

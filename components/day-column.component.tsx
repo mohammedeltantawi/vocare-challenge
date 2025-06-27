@@ -1,13 +1,20 @@
 import AppointmentCard from "./appointment-card.component";
 import { Appointment } from "@/models/appointment.model";
-
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle
+} from "@/components/ui/dialog";
+import AppointmentEditForm from "./appointment-edit.component";
 interface Props {
   day: Date;
   appointments: Appointment[];
   isToday?: boolean;
 }
 
-export default function DayColumn({ day, appointments, isToday }: Props) {
+export default function DayColumn({ appointments, isToday }: Props) {
   const startHour = 6;
   const endHour = 22;
   const hourHeight = 120; // px
@@ -44,8 +51,23 @@ export default function DayColumn({ day, appointments, isToday }: Props) {
               height: `${height}px`,
             }}
           >
-            <AppointmentCard appointment={appt} />
-          </div>
+            <Dialog key={appt.id} >
+              <DialogTrigger asChild>
+                <div className="w-full">
+                  <AppointmentCard appointment={appt} />
+                </div>
+              </DialogTrigger>
+              <DialogHeader>
+                <DialogTitle></DialogTitle>
+              </DialogHeader>
+              <DialogContent>
+                <AppointmentEditForm
+                  appointment={appt}
+                  onSuccess={() => window.location.reload()}
+                />
+              </DialogContent>
+            </Dialog>
+    </div>
         );
       })}
     </div>
