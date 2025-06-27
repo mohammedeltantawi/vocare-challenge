@@ -1,9 +1,7 @@
-// models/patient.ts
-
 export interface Relatives {
   id: string;
-  created_at: string; // ISO timestamp
-  pronoun: 'Herr' | 'Frau' | string; // Use literal types if pronouns are restricted
+  created_at: string;
+  pronoun: 'Herr' | 'Frau' | string;
   firstname: string;
   lastname: string;
   notes: string | null;

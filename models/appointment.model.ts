@@ -1,13 +1,13 @@
 export interface Appointment {
   id: string;
-  created_at: string; // ISO timestamp
+  created_at: string;
   updated_at: string | null;
-  start: string; // ISO timestamp
-  end: string; // ISO timestamp
+  start: string;
+  end: string;
   location: string;
-  patient: string; // patient ID (UUID)
-  attachements: string[] | null; // assuming this could be an array of file URLs or IDs
-  category: string; // category ID (UUID)
+  patient: string;
+  attachements: string[] | null;
+  category: string;
   notes: string;
   title: string;
 }

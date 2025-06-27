@@ -99,7 +99,6 @@ export default function TermineBarComponent({
       </div>
 
       <div className="flex gap-4 items-center">
-        {/* Filter Button + Dialog */}
         <Dialog>
           <DialogTrigger asChild>
             <div className="cursor-pointer flex flex-row gap-2 items-center justify-center border border-black w-fit h-8 px-3 py-1 text-sm rounded-md">
@@ -179,7 +178,6 @@ export default function TermineBarComponent({
           </DialogContent>
         </Dialog>
 
-        {/* New Appointment */}
         <Dialog>
           <DialogTrigger asChild>
             <div className="cursor-pointer bg-black flex flex-row gap-2 items-center justify-center w-fit h-8 px-3 py-1 text-sm rounded-md">

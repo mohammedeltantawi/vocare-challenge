@@ -21,15 +21,12 @@ export default function MonthView({ selectedDate, appointments, setSelectedDate 
   const categories = useCategories();
   const patients = usePatients();
 
-  // Determine the start of the calendar grid (Monday of first week)
   const startDay = new Date(startOfMonth);
   startDay.setDate(startDay.getDate() - ((startDay.getDay() + 6) % 7));
 
-  // Determine the end of the calendar grid (Sunday of last week)
   const endDay = new Date(endOfMonth);
   endDay.setDate(endDay.getDate() + (7 - ((endDay.getDay() + 6) % 7) - 1));
 
-  // Generate all days for the grid
   const days: Date[] = [];
   let current = new Date(startDay);
   while (current <= endDay) {
@@ -55,7 +52,7 @@ export default function MonthView({ selectedDate, appointments, setSelectedDate 
 
   const getBackgroundColor =(categoryId: string) => {
     const category = categories.find((c) => c.id === categoryId);
-    return`${category?.color}20`; // transparent variant for background
+    return`${category?.color}20`;
   }
   return (
     <div>

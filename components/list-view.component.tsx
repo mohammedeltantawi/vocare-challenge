@@ -20,7 +20,6 @@ export default function ListView({ appointments, selectedDate }: Props) {
   const [hasLoadedAll, setHasLoadedAll] = useState(false);
   const [visibleAppointments, setVisibleAppointments] = useState<Appointment[]>([]);
 
-  // Ensure visibleAppointments is reset when selectedDate changes
   useMemo(() => {
     const visible = appointments.filter((a) => new Date(a.start) >= selectedDate);
     setVisibleAppointments(visible);

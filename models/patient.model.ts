@@ -1,12 +1,12 @@
 export interface Patient {
   id: string;
-  created_at: string; // ISO timestamp
+  created_at: string;
   firstname: string;
   lastname: string;
-  birth_date: string; // ISO timestamp
-  care_level: number; // e.g., 1-5
+  birth_date: string;
+  care_level: number;
   pronoun: 'Herr' | 'Frau' | string;
   email: string;
   active: boolean;
-  active_since: string; // ISO timestamp
+  active_since: string;
 }
