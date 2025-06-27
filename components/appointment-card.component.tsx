@@ -21,8 +21,8 @@ export default function AppointmentCard({ appointment }: Props) {
   const patients = usePatients();
   const patient = patients.find((c) => c.id === appointment.patient);
 
-  const borderColor = category?.color || "#ccc"; // fallback to light gray
-  const bgColor = `${category?.color}20`; // transparent variant for background
+  const borderColor = category?.color || "#ccc"; 
+  const bgColor = `${category?.color}20`;
 
   function formatTime(dateStr: string) {
     const date = new Date(dateStr);

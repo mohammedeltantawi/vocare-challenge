@@ -1,6 +1,5 @@
 import AppointmentCard from "./appointment-card.component";
 import { Appointment } from "@/models/appointment.model";
-import { useEffect, useRef, useState } from "react";
 
 interface Props {
   day: Date;
@@ -27,7 +26,6 @@ export default function DayColumn({ day, appointments, isToday }: Props) {
         />
       ))}
 
-      {/* appointments */}
       {appointments.map((appt) => {
         const start = new Date(appt.start);
         const end = new Date(appt.end);

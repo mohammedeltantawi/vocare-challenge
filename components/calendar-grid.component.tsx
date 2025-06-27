@@ -12,7 +12,7 @@ export default function CalendarGrid({ weekDates, appointments }: Props) {
 
   const startHour = 6;
   const endHour = 22;
-  const hourHeight = 120; // px
+  const hourHeight = 120;
   const [nowTop, setNowTop] = useState<number | null>(null);
 
   useEffect(() => {
@@ -36,7 +36,6 @@ export default function CalendarGrid({ weekDates, appointments }: Props) {
   const targetRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
-    // Wait until all refs are set
     if (
       sourceRefs.current.length !== weekDates.length ||
       sourceRefs.current.some((el) => !el)
