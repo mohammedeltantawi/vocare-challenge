@@ -94,7 +94,7 @@ export default function MonthView({ selectedDate, appointments, setSelectedDate 
 
             <div className="mt-1 space-y-1 overflow-hidden">
               {appts.slice(0, 2).map((appt) => (
-                <HoverCard>
+                <HoverCard key={appt.id}>
                   <HoverCardTrigger asChild>
                     <div
                       key={appt.id}

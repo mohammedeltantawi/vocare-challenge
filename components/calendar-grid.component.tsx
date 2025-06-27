@@ -1,7 +1,7 @@
 import DayColumn from "./day-column.component";
 import HourColumn from "./hour-column.component";
 import { Appointment } from "@/models/appointment.model";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 interface Props {
   weekDates: Date[];
@@ -32,6 +32,37 @@ export default function CalendarGrid({ weekDates, appointments }: Props) {
     const interval = setInterval(update, 1000);
     return () => clearInterval(interval);
   }, []);
+  const sourceRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const targetRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    // Wait until all refs are set
+    if (
+      sourceRefs.current.length !== weekDates.length ||
+      sourceRefs.current.some((el) => !el)
+    ) {
+      return;
+    }
+
+    const observer = new ResizeObserver(() => {
+      weekDates.forEach((_, i) => {
+        const sourceEl = sourceRefs.current[i];
+        const targetEl = targetRefs.current[i];
+        if (sourceEl && targetEl) {
+          const width = sourceEl.getBoundingClientRect().width;
+          targetEl.style.width = `${width}px`;
+        }
+      });
+    });
+
+    sourceRefs.current.forEach((el) => {
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, [weekDates]);
+
+
 
   return (
     <div className="overflow-x-auto w-full h-[1020px]">
@@ -44,19 +75,23 @@ export default function CalendarGrid({ weekDates, appointments }: Props) {
           {/* Scrollable day headers */}
           {weekDates.map((d, i) => {
             const isToday = new Date().toDateString() === d.toDateString();
-            return(
+            return (
               <div
                 key={i}
-                className={`min-w-[300px] h-16 flex items-center justify-center border-r ${
-                  isToday ? "bg-secondary" : "bg-white"
-                }`}            >
+                ref={(el) => {
+                  targetRefs.current[i] = el;
+                }}
+                className={`h-16 flex items-center justify-center border-r whitespace-nowrap bg-white ${
+                  isToday ? "bg-secondary" : ""
+                }`}
+              >
                 {d.toLocaleDateString("de-DE", {
                   weekday: "long",
                   day: "2-digit",
                   month: "short",
                 })}
               </div>
-            )
+            );
           })}
         </div>
 
@@ -83,19 +118,27 @@ export default function CalendarGrid({ weekDates, appointments }: Props) {
 
 
           {/* Day columns */}
-          {weekDates.map((date, idx) => { 
+          {weekDates.map((date, i) => {
             const isToday = new Date().toDateString() === date.toDateString();
             return (
-              <DayColumn
-                key={idx}
-                day={date}
-                isToday={isToday}
-                appointments={appointments.filter(
-                  (appt) =>
-                    new Date(appt.start).toDateString() === date.toDateString()
-                )}
-              />
-            )})}
+              <div
+                key={i}
+                ref={(el) => {
+                  sourceRefs.current[i] = el;
+                }}
+                className="day-column-measurable flex-shrink-0 w-[400px]"
+              >
+                <DayColumn
+                  day={date}
+                  isToday={isToday}
+                  appointments={appointments.filter(
+                    (appt) =>
+                      new Date(appt.start).toDateString() === date.toDateString()
+                  )}
+                />
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
