@@ -18,6 +18,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useCategories } from "@/context/category.context";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { usePatients } from "@/context/patient.context";
+import AppointmentForm from "./new-appointment-form.component";
 
 interface Props {
   view: ViewEnum;
@@ -45,7 +47,7 @@ export default function TermineBarComponent({
   setDateRange,
 }: Props) {
   const categories = useCategories();
-
+  const patients = usePatients();
   const toggleCategory = (id: string) => {
     if (selectedCategories.includes(id)) {
       setSelectedCategories(selectedCategories.filter((c) => c !== id));
@@ -178,10 +180,17 @@ export default function TermineBarComponent({
         </Dialog>
 
         {/* New Appointment */}
-        <div className="cursor-pointer bg-black flex flex-row gap-2 items-center justify-center w-fit h-8 px-3 py-1 text-sm rounded-md">
-          <Plus color="white" size={12} />
-          <span className="text-white">Neuer Termin</span>
-        </div>
+        <Dialog>
+          <DialogTrigger asChild>
+            <div className="cursor-pointer bg-black flex flex-row gap-2 items-center justify-center w-fit h-8 px-3 py-1 text-sm rounded-md">
+              <Plus color="white" size={12} />
+              <span className="text-white">Neuer Termin</span>
+            </div>
+          </DialogTrigger>
+          <DialogContent>
+            <AppointmentForm onSuccess={() => window.location.reload()} />
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
