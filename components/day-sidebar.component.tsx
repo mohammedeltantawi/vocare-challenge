@@ -2,6 +2,14 @@ import { Appointment } from "@/models/appointment.model";
 import AppointmentCard from "./appointment-card.component";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle
+} from "@/components/ui/dialog";
+import AppointmentEditForm from "@/components/appointment-edit.component";
 
 interface Props {
   date: Date;
@@ -10,7 +18,6 @@ interface Props {
 
 export default function DaySidebar({ date, appointments }: Props) {
   const isToday = date.toDateString() === new Date().toDateString();
-
   return (
     <div className="flex flex-col gap-2 justify-center">
         <div className="bg-white border p-2 flex items-center justify-center">
@@ -26,9 +33,23 @@ export default function DaySidebar({ date, appointments }: Props) {
                 <p className="text-sm text-muted-foreground">Keine Termine für diesen Tag</p>
             ) : (
                 appointments.map((appt) => (
-                <div key={appt.id} className="w-full">
-                    <AppointmentCard appointment={appt} />
-                </div>
+                  <Dialog key={appt.id} >
+                    <DialogTrigger asChild>
+                      <div className="w-full">
+                        <AppointmentCard appointment={appt} />
+                      </div>
+                    </DialogTrigger>
+                    <DialogHeader>
+                      <DialogTitle>{appt.title}</DialogTitle>
+                    </DialogHeader>
+                    <DialogContent>
+                      <AppointmentEditForm 
+                        appointment={appt}
+                        onSuccess={() => window.location.reload()}
+                      />
+                    </DialogContent>
+                  </Dialog>
+
             ))
             )}
         </div>
