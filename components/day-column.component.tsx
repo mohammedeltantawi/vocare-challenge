@@ -56,11 +56,14 @@ export default function DayColumn({ appointments, isToday }: Props) {
     groups.push(currentGroup);
   }
 
+  const dayHeight = hourHeight * (endHour - startHour + 1);
+
   return (
     <div
-      className={`relative flex-1 border-l min-h-[1920px] ${
+      className={`relative flex-1 border-l ${
         isToday ? "bg-secondary" : "bg-white"
       }`}
+      style={{ minHeight: `${dayHeight}px` }}
     >
       {/* Hour lines */}
       {Array.from({ length: endHour - startHour + 1 }).map((_, i) => (
@@ -81,8 +84,11 @@ export default function DayColumn({ appointments, isToday }: Props) {
           const start = new Date(appt.start);
           const end = new Date(appt.end);
           const minutesFromStart = (start.getHours() - startHour) * 60 + start.getMinutes();
-          const durationInMinutes = Math.max(0, (end.getTime() - start.getTime()) / 60000); 
+          const dayEnd = new Date(start);
+          dayEnd.setHours(endHour, 59, 59, 999);
 
+          const effectiveEnd = end > dayEnd ? dayEnd : end;
+          const durationInMinutes = Math.max(0, (effectiveEnd.getTime() - start.getTime()) / 60000);
           const top = (minutesFromStart / 60) * hourHeight;
           const height = Math.max((durationInMinutes / 60) * hourHeight,35);
 

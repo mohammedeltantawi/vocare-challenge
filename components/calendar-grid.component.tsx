@@ -118,26 +118,55 @@ export default function CalendarGrid({ weekDates, appointments }: Props) {
 
           {/* Day columns */}
           {weekDates.map((date, i) => {
-            const isToday = new Date().toDateString() === date.toDateString();
-            return (
-              <div
-                key={i}
-                ref={(el) => {
+          const dayStart = new Date(date);
+          dayStart.setHours(0, 0, 0, 0);
+
+          const dayEnd = new Date(date);
+          dayEnd.setHours(23, 59, 59, 999);
+
+          const dayAppointments = appointments.flatMap((appt) => {
+            const apptStart = new Date(appt.start);
+            const apptEnd = new Date(appt.end);
+
+            // Does it overlap this day at all?
+            if (apptEnd < dayStart || apptStart > dayEnd) return [];
+
+            // If it starts on this day: pass as is
+            if (apptStart >= dayStart && apptStart <= dayEnd) {
+              return [appt];
+            }
+
+            // If it started before but ends during or after this day: clone with start = 00:00
+            if (apptStart < dayStart && apptEnd > dayStart) {
+              return [
+                {
+                  ...appt,
+                  start: dayStart.toISOString(), // starts at 00:00
+                },
+              ];
+            }
+
+            return [];
+          });
+
+          const isToday = new Date().toDateString() === date.toDateString();
+
+          return (
+            <div
+              key={i}
+              ref={(el) => {
                   sourceRefs.current[i] = el;
                 }}
-                className="day-column-measurable flex-shrink-0 w-[400px]"
-              >
-                <DayColumn
-                  day={date}
-                  isToday={isToday}
-                  appointments={appointments.filter(
-                    (appt) =>
-                      new Date(appt.start).toDateString() === date.toDateString()
-                  )}
-                />
-              </div>
-            );
-          })}
+                className="day-column-measurable flex-shrink-0 w-[400px] border-l h-full"
+            >
+              <DayColumn
+                day={date}
+                appointments={dayAppointments}
+                isToday={isToday}
+              />
+            </div>
+          );
+        })}
         </div>
       </div>
     </div>
