@@ -78,7 +78,7 @@ export default function DayColumn({ appointments, isToday }: Props) {
       ))}
 
       {/* Render overlapping groups side-by-side */}
-      {groups.map((group, groupIndex) => {
+      {groups.map((group) => {
         const groupSize = group.length;
         return group.map((appt, i) => {
           const start = new Date(appt.start);
