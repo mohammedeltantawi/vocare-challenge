@@ -138,10 +138,10 @@ export default function ListView({ appointments, selectedDate }: Props) {
                       )}
                     </div>
                   </DialogTrigger>
-                  <DialogHeader>
-                    <DialogTitle></DialogTitle>
-                  </DialogHeader>
                   <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>{appt.title}</DialogTitle>
+                    </DialogHeader>
                     <AppointmentEditForm
                       appointment={appt}
                       onSuccess={() => window.location.reload()}

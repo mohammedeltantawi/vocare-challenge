@@ -28,7 +28,7 @@ export default function MonthView({ selectedDate, appointments, setSelectedDate 
   endDay.setDate(endDay.getDate() + (7 - ((endDay.getDay() + 6) % 7) - 1));
 
   const days: Date[] = [];
-  let current = new Date(startDay);
+  const current = new Date(startDay);
   while (current <= endDay) {
     days.push(new Date(current));
     current.setDate(current.getDate() + 1);

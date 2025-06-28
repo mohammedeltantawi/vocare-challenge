@@ -1,11 +1,6 @@
 import { Geist } from "next/font/google";
 import "./globals.css";
 
-const defaultUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000";
-
-
 const geistSans = Geist({
   variable: "--font-geist-sans",
   display: "swap",

@@ -39,10 +39,10 @@ export default function DaySidebar({ date, appointments }: Props) {
                         <AppointmentCard appointment={appt} />
                       </div>
                     </DialogTrigger>
-                    <DialogHeader>
-                      <DialogTitle>{}</DialogTitle>
-                    </DialogHeader>
                     <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>{appt.title}</DialogTitle>
+                      </DialogHeader>
                       <AppointmentEditForm 
                         appointment={appt}
                         onSuccess={() => window.location.reload()}
