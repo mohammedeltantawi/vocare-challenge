@@ -70,7 +70,7 @@ export default function CalendarGrid({ weekDates, appointments }: Props) {
         {/* Date Headers */}
         <div className="flex w-full border-b text-sm font-medium">
           {/* Hour column spacer */}
-          <div className="w-[60px] flex-shrink-0 bg-white" />
+          <div className="w-[80px] flex-shrink-0 bg-white" />
           {/* Scrollable day headers */}
           {weekDates.map((d, i) => {
             const isToday = new Date().toDateString() === d.toDateString();
@@ -97,7 +97,7 @@ export default function CalendarGrid({ weekDates, appointments }: Props) {
         {/* Time + Day Columns */}
         <div className="flex w-full relative">
           {/* Hour labels */}
-          <div className="w-[60px] flex-shrink-0 relative">
+          <div className="w-[80px] flex-shrink-0 relative">
             <HourColumn />
           </div>
 
