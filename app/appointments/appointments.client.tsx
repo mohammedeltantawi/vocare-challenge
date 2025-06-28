@@ -11,7 +11,7 @@ import MonthView from '@/components/month-view.component';
 import DaySidebar from '@/components/day-sidebar.component';
 import { Category } from '@/models/category.model';
 import { Patient } from '@/models/patient.model';
-import { PatientContext, usePatients } from '@/context/patient.context';
+import { PatientContext } from '@/context/patient.context';
 
 interface Props {
   appointments: Appointment[];
