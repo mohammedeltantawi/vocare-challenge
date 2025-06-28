@@ -18,7 +18,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useCategories } from "@/context/category.context";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { usePatients } from "@/context/patient.context";
 import AppointmentForm from "./new-appointment-form.component";
 
 interface Props {
@@ -47,7 +46,6 @@ export default function TermineBarComponent({
   setDateRange,
 }: Props) {
   const categories = useCategories();
-  const patients = usePatients();
   const toggleCategory = (id: string) => {
     if (selectedCategories.includes(id)) {
       setSelectedCategories(selectedCategories.filter((c) => c !== id));
