@@ -10,8 +10,8 @@ interface Props {
 
 export default function CalendarGrid({ weekDates, appointments }: Props) {
 
-  const startHour = 6;
-  const endHour = 22;
+  const startHour = 0;
+  const endHour = 23;
   const hourHeight = 120;
   const [nowTop, setNowTop] = useState<number | null>(null);
 

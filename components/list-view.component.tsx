@@ -106,7 +106,7 @@ export default function ListView({ appointments, selectedDate }: Props) {
                             style={{ backgroundColor: getBackgroundColor(appt.category) }}
                           ></div>
                           <div className={`font-semibold text-lg ${didPass(appt.end) && "line-through"}`}>
-                            {appt.title}
+                            {appt.title ?? "kein Titel"}
                           </div>
                         </div>
                         <input

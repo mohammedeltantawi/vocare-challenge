@@ -34,7 +34,7 @@ export default function AppointmentCard({ appointment }: Props) {
   return (
     <div
       className={cn(
-        "rounded-md p-3 shadow-sm text-sm border-l-4"
+        "h-full rounded-md p-3 shadow-sm text-sm border-l-4 overflow-hidden"
       )}
       style={{
         borderLeftColor: borderColor,
@@ -45,7 +45,7 @@ export default function AppointmentCard({ appointment }: Props) {
         <HoverCard>
         <HoverCardTrigger asChild>
         <strong className={cn("block", didPass(appointment.end) && "line-through")}>
-          {appointment.title}
+          {appointment.title ?? "kein Titel" }
         </strong>
         </HoverCardTrigger>
         <HoverCardContent className="w-64 bg-secondary p-3 text-sm space-y-1 border-l-4" style={{

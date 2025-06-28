@@ -1,5 +1,5 @@
 export default function HourColumn() {
-  const hours = Array.from({ length: 17 }, (_, i) => 6 + i); // 6:00 to 22:00
+  const hours = Array.from({ length: 24 }, (_, i) => 0 + i); // 6:00 to 22:00
   return (
     <div className="relative text-right text-xs pr-1 h-[1020px]">
       {hours.map((h, i) => (
