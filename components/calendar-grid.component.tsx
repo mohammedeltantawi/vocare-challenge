@@ -64,7 +64,7 @@ export default function CalendarGrid({ weekDates, appointments }: Props) {
 
 
   return (
-    <div className="overflow-x-auto w-full h-[1020px]">
+    <div className="overflow-x-scroll w-[100vw] h-[1020px]">
       {/* Header + Grid */}
       <div className="min-w-max">
         {/* Date Headers */}
