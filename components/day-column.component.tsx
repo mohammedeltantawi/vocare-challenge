@@ -20,7 +20,7 @@ export default function DayColumn({ appointments, isToday }: Props) {
   const hourHeight = 120; // px
 
   return (
-    <div className={`relative flex-1 border-l min-h-[1920px] ${isToday ? "bg-secondary" : "bg-white"}`}>
+    <div className={`relative flex-1 border-l min-h-[1920px] w-[400px] ${isToday ? "bg-secondary" : "bg-white"}`}>
       {/* hour lines */}
       {Array.from({ length: endHour - startHour + 1 }).map((_, i) => (
         <div
@@ -57,10 +57,10 @@ export default function DayColumn({ appointments, isToday }: Props) {
                   <AppointmentCard appointment={appt} />
                 </div>
               </DialogTrigger>
-              <DialogHeader>
-                <DialogTitle></DialogTitle>
-              </DialogHeader>
               <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>{appt.title}</DialogTitle>
+                </DialogHeader>
                 <AppointmentEditForm
                   appointment={appt}
                   onSuccess={() => window.location.reload()}
